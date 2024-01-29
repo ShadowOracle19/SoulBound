@@ -103,7 +103,7 @@ MonoBehaviour:
   _offsetColor: {r: 0, g: 0.44705883, b: 0.047058824, a: 1}
   _renderer: {fileID: 7550975431273862800}
   _highlight: {fileID: 8318010677727875539}
-  isUnTouchable: 0
+  objectOnTile: 0
 --- !u!65 &650896709259813582
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -119,7 +119,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

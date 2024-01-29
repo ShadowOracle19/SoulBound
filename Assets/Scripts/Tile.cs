@@ -8,6 +8,8 @@ public class Tile : MonoBehaviour
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
 
+    public bool objectOnTile = false;
+
 
     public void Init(bool isOffset)
     {
@@ -21,7 +23,7 @@ public class Tile : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if(this.tag == "Grid")
+        if(this.tag == "Grid" && !objectOnTile)
         {
             Debug.Log(gameObject.name);
             GridManager.Instance.target.transform.position = new Vector3(this.transform.position.x, 0.5f, this.transform.position.z);
@@ -36,5 +38,10 @@ public class Tile : MonoBehaviour
     private void OnMouseExit()
     {
         _highlight.SetActive(false);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        
     }
 }
