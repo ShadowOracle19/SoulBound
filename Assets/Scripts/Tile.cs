@@ -16,6 +16,7 @@ public class Tile : MonoBehaviour
     public bool tileCanBeMovedOn = false;
     public bool isHighlighted = false;
     public Agent cock;
+    public Enemy enemy;
 
 
     public void Init(bool isOffset, int x, int z)
