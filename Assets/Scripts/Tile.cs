@@ -10,9 +10,11 @@ public class Tile : MonoBehaviour
     [SerializeField] private GameObject _highlight;
     [SerializeField] private GameObject _available;
     [SerializeField] private GameObject _unavailable;
+    [SerializeField] private GameObject _blue;
 
     public bool objectOnTile = false;
     public bool tileCanBeMovedOn = false;
+    public bool isHighlighted = false;
     public Agent cock;
 
 
@@ -35,25 +37,35 @@ public class Tile : MonoBehaviour
             _unavailable.SetActive(false);
         }
 
-        if(tileCanBeMovedOn) 
+        if(isHighlighted) 
         {
             _available.SetActive(true);
         }
-        else if(!tileCanBeMovedOn)
+        else if(!isHighlighted)
         {
             _available.SetActive(false);
         }
 
-        if(cock)
+        if(tileCanBeMovedOn)
+        {
+            _blue.SetActive(true);
+        }
+
+        else if(!tileCanBeMovedOn)
+        {
+            _blue.SetActive(false);
+        }
+
+        if (cock)
         {
             objectOnTile = true;
 
-            if(cock.currentlyBeingControlled && (GridManager.Instance.whore.currentTilesLeft != 0))
+            if (cock.currentlyBeingControlled && (GridManager.Instance.whore.currentTilesLeft != 0))
             {
-                FindMoveableSquares();
+                //FindMoveableSquares();
 
             }
-            else if(cock.currentTilesLeft == 0 && !cock.noMoreMovement)
+            else if (cock.currentTilesLeft == 0 && !cock.noMoreMovement)
             {
                 cock.noMoreMovement = true;
                 ClearMoveableSquares();
@@ -67,8 +79,13 @@ public class Tile : MonoBehaviour
         objectOnTile = false;
     }
 
-    private void FindMoveableSquares()
+    public void FindMoveableSquares()
     {
+        if(!objectOnTile || cock == GridManager.Instance.whore)
+        {
+            tileCanBeMovedOn = true;
+        }
+
         if (GridManager.Instance.GetTileAtPosition(new Vector2(_x + 1, _z)) != null)
         {
             GridManager.Instance.GetTileAtPosition(new Vector2(_x + 1, _z)).tileCanBeMovedOn = true;
@@ -95,7 +112,12 @@ public class Tile : MonoBehaviour
 
     public void ClearMoveableSquares()
     {
-        if(GridManager.Instance.GetTileAtPosition(new Vector2(_x + 1, _z)) != null)
+        if (!objectOnTile)
+        {
+            tileCanBeMovedOn = false;
+        }
+
+        if (GridManager.Instance.GetTileAtPosition(new Vector2(_x + 1, _z)) != null)
         {
             GridManager.Instance.GetTileAtPosition(new Vector2(_x + 1, _z)).tileCanBeMovedOn = false;
         }
@@ -119,27 +141,38 @@ public class Tile : MonoBehaviour
 
     private void OnMouseEnter()
     {
+        if (GridManager.Instance.movementIsDragging)
+        {
+
+            GridManager.Instance.StartDragMovement(this);
+            return;
+        }
         _highlight.SetActive(true);
     }
 
     private void OnMouseDown()
     {
-        if(this.tag == "Grid" && !objectOnTile && (GridManager.Instance.whore.currentTilesLeft != 0) && tileCanBeMovedOn)
-        {
-            Debug.Log(gameObject.name);
-            GridManager.Instance.whore.transform.position = new Vector3(this.transform.position.x, 0.5f, this.transform.position.z);
-            GridManager.Instance.whore.currentTilesLeft -= 1;
-        }
-        else
-        {
-            Debug.Log(gameObject.name);
-        }
+        //if(this.tag == "Grid" && !objectOnTile && (GridManager.Instance.whore.currentTilesLeft != 0) && tileCanBeMovedOn)
+        //{
+        //    Debug.Log(gameObject.name);
+        //    GridManager.Instance.whore.transform.position = new Vector3(this.transform.position.x, 0.5f, this.transform.position.z);
+        //    GridManager.Instance.whore.currentTilesLeft -= 1;
+        //}
+        //else
+        //{
+        //    Debug.Log(gameObject.name);
+        //}
            
     }
 
     private void OnMouseExit()
     {
         _highlight.SetActive(false);
+        if (GridManager.Instance.movementIsDragging)
+        {
+            ClearMoveableSquares();
+            return;
+        }
     }
 
 }

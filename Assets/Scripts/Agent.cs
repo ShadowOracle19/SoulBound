@@ -25,7 +25,7 @@ public class Agent : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        currentTile.ClearMoveableSquares();
+        //currentTile.ClearMoveableSquares();
         currentTile.objectOnTile = false;
         currentTile.cock = null;
         currentTile = null;
@@ -40,7 +40,27 @@ public class Agent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (GridManager.Instance.tilesInMovement.Count == 0 && GridManager.Instance.whore == this && currentTilesLeft > 0)
+        {
+            currentTile.FindMoveableSquares();
+        }
+    }
+
+    private void OnMouseDrag()
+    {
+        GridManager.Instance.movementIsDragging = true;
+    }
+
+    private void OnMouseUp()
+    {
+        GridManager.Instance.movementIsDragging = false;
+        if (GridManager.Instance.tilesInMovement.Count != 0)
+        {
+            gameObject.transform.position = new Vector3(GridManager.Instance.tilesInMovement[GridManager.Instance.tilesInMovement.Count - 1].transform.position.x,
+            transform.position.y, GridManager.Instance.tilesInMovement[GridManager.Instance.tilesInMovement.Count - 1].transform.position.z);
+            GridManager.Instance.ClearListForMovement();
+        }
+
     }
 
     private void OnMouseEnter()
@@ -55,7 +75,8 @@ public class Agent : MonoBehaviour
 
     private void OnMouseDown()
     {
-        selected.SetActive(true);
+        Debug.Log("down 1");
+        //selected.SetActive(true);
         GridManager.Instance.SelectAgent(this);
     }
 }

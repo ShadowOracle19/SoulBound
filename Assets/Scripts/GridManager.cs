@@ -34,8 +34,11 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Transform _backgroundGridParent;
 
     public Agent whore;
+    public bool movementIsDragging = false;
 
     private Dictionary<Vector2, Tile> _tiles;
+
+    public List<Tile> tilesInMovement = new List<Tile>();
 
 
     private void Start()
@@ -129,6 +132,18 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if(!movementIsDragging)
+        {
+            foreach (Transform child in _gridParent)
+            {
+                child.gameObject.GetComponent<Tile>().tileCanBeMovedOn = false;
+            }
+
+        }
+    }
+
     public void SelectAgent(Agent agentToBeSelected)
     {
         if(whore != null)
@@ -143,5 +158,46 @@ public class GridManager : MonoBehaviour
 
         whore = agentToBeSelected;
         whore.currentlyBeingControlled = true;
+    }
+
+    public void StartDragMovement(Tile tile)
+    {
+        if(tilesInMovement.Contains(tile) || tile.objectOnTile || (whore.currentTilesLeft == 0))
+        {
+            if (tilesInMovement.Count > 1 && tilesInMovement[tilesInMovement.Count - 2] == tile)
+            {
+                tilesInMovement[tilesInMovement.Count - 1].isHighlighted = false;
+                tilesInMovement[tilesInMovement.Count - 1].tileCanBeMovedOn = false;
+                tilesInMovement.RemoveAt(tilesInMovement.Count - 1);
+                whore.currentTilesLeft += 1;
+                tile.FindMoveableSquares();
+                return;
+            }
+            else if(tilesInMovement.Count == 1 && tile.cock == whore)
+            {
+                tilesInMovement[tilesInMovement.Count - 1].isHighlighted = false;
+                tilesInMovement[tilesInMovement.Count - 1].tileCanBeMovedOn = false;
+                tilesInMovement.RemoveAt(tilesInMovement.Count - 1);
+                whore.currentTilesLeft += 1;
+                tile.FindMoveableSquares();
+            }
+            return;
+        }
+
+
+        tile.isHighlighted = true;
+        tilesInMovement.Add(tile);
+        whore.currentTilesLeft -= 1;
+        tile.FindMoveableSquares();
+    }
+
+    public void ClearListForMovement()
+    {
+        foreach(Tile tile in tilesInMovement)
+        {
+            tile.isHighlighted = false;
+            tile.tileCanBeMovedOn = false;
+        }
+        tilesInMovement.Clear();
     }
 }
