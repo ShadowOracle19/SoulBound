@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
@@ -15,7 +16,7 @@ public class Tile : MonoBehaviour
     public bool objectOnTile = false;
     public bool tileCanBeMovedOn = false;
     public bool isHighlighted = false;
-    public Agent cock;
+    public Agent agentTile;
     public Enemy enemy;
 
 
@@ -28,61 +29,63 @@ public class Tile : MonoBehaviour
 
     private void Update()
     {
-        if(objectOnTile) 
-        { 
-            _unavailable.SetActive(true);
-            tileCanBeMovedOn = false;
-        }
-        else if(!objectOnTile)
-        {
-            _unavailable.SetActive(false);
-        }
+        DisplayHideMoveSquares();
 
-        if(isHighlighted) 
-        {
-            _available.SetActive(true);
-        }
-        else if(!isHighlighted)
-        {
-            _available.SetActive(false);
-        }
+        
+    }
 
-        if(tileCanBeMovedOn)
+    private void DisplayHideMoveSquares()
+    {
+        //shows possible areas where move line can be drawn
+        if (tileCanBeMovedOn)
         {
             _blue.SetActive(true);
         }
-
-        else if(!tileCanBeMovedOn)
+        else if (!tileCanBeMovedOn)
         {
             _blue.SetActive(false);
         }
 
-        if (cock)
+        //Shows where move line was drawn
+        if (isHighlighted)
+        {
+            _available.SetActive(true);
+        }
+        else if (!isHighlighted)
+        {
+            _available.SetActive(false);
+        }
+
+        //Makes Tiles Unavailable to move onto
+        if (agentTile || enemy)
         {
             objectOnTile = true;
+        }
+        else
+        {
+            objectOnTile = false;
+        }
 
-            if (cock.currentlyBeingControlled && (GridManager.Instance.whore.currentTilesLeft != 0))
-            {
-                //FindMoveableSquares();
-
-            }
-            else if (cock.currentTilesLeft == 0 && !cock.noMoreMovement)
-            {
-                cock.noMoreMovement = true;
-                ClearMoveableSquares();
-            }
+        if (objectOnTile)
+        {
+            _unavailable.SetActive(true);
+            tileCanBeMovedOn = false;
+        }
+        else if (!objectOnTile)
+        {
+            _unavailable.SetActive(false);
         }
     }
 
     public void EmptyTile()
     {
-        cock = null;
+        agentTile = null;
         objectOnTile = false;
     }
 
     public void FindMoveableSquares()
     {
-        if(!objectOnTile || cock == GridManager.Instance.whore)
+        if(!objectOnTile || agentTile == GridManager.Instance.whore)
         {
             tileCanBeMovedOn = true;
         }
@@ -148,8 +151,18 @@ public class Tile : MonoBehaviour
             GridManager.Instance.StartDragMovement(this);
             return;
         }
+        if(GridManager.Instance.dragToDeployAgent && !GridManager.Instance.deployAgentOverTile)
+        {
+            GridManager.Instance.deployAgentOverTile = true;
+        }
+
+        if (GridManager.Instance.dragToDeployAgent && GridManager.Instance.deployAgentOverTile && GridManager.Instance.deployingAgent != null)
+        {
+            GridManager.Instance.deployingAgent.transform.position = new Vector3(this.transform.position.x, 0.5f, this.transform.position.z);
+        }
         _highlight.SetActive(true);
     }
+
 
     private void OnMouseDown()
     {

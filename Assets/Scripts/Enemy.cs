@@ -18,9 +18,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        //currentTile.ClearMoveableSquares();
-        currentTile.objectOnTile = false;
-        currentTile.cock = null;
+        currentTile.enemy = null;
         currentTile = null;
     }
 }

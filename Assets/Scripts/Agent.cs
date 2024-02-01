@@ -19,15 +19,14 @@ public class Agent : MonoBehaviour
         {
             currentTile = other.gameObject.GetComponent<Tile>();
             currentTile.GetComponent<Tile>().objectOnTile = true;
-            currentTile.GetComponent<Tile>().cock = this;
+            currentTile.GetComponent<Tile>().agentTile = this;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        //currentTile.ClearMoveableSquares();
         currentTile.objectOnTile = false;
-        currentTile.cock = null;
+        currentTile.agentTile = null;
         currentTile = null;
     }
 

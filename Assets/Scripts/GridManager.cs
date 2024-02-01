@@ -40,6 +40,13 @@ public class GridManager : MonoBehaviour
 
     public List<Tile> tilesInMovement = new List<Tile>();
 
+    public bool mouseHeldDown = false;
+
+    [Header("Deply Agent")]
+    public bool deployAgentOverTile = false;
+    public bool dragToDeployAgent = false;
+    public GameObject deployingAgent;
+
 
     private void Start()
     {
@@ -127,7 +134,7 @@ public class GridManager : MonoBehaviour
             Tile enemyTile = CheckTilesAroundAgent();
             
             
-            Destroy(enemyTile.cock.gameObject);
+            Destroy(enemyTile.agentTile.gameObject);
             enemyTile.EmptyTile();
         }
     }
@@ -141,6 +148,16 @@ public class GridManager : MonoBehaviour
                 child.gameObject.GetComponent<Tile>().tileCanBeMovedOn = false;
             }
 
+        }
+
+        if(Input.GetMouseButtonDown(0))
+        {
+            mouseHeldDown = true;
+        }
+
+        if(Input.GetMouseButtonUp(0))
+        {
+            mouseHeldDown = false;
         }
     }
 
@@ -173,7 +190,7 @@ public class GridManager : MonoBehaviour
                 tile.FindMoveableSquares();
                 return;
             }
-            else if(tilesInMovement.Count == 1 && tile.cock == whore)
+            else if(tilesInMovement.Count == 1 && tile.agentTile == whore)
             {
                 tilesInMovement[tilesInMovement.Count - 1].isHighlighted = false;
                 tilesInMovement[tilesInMovement.Count - 1].tileCanBeMovedOn = false;
