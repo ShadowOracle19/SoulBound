@@ -145,13 +145,12 @@ public class Tile : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (GridManager.Instance.movementIsDragging)
+        if (GridManager.Instance.movementIsDragging /*&& tileCanBeMovedOn*/)
         {
-
             GridManager.Instance.StartDragMovement(this);
             return;
         }
-        if(GridManager.Instance.dragToDeployAgent && !GridManager.Instance.deployAgentOverTile)
+        if (GridManager.Instance.dragToDeployAgent && !GridManager.Instance.deployAgentOverTile)
         {
             GridManager.Instance.deployAgentOverTile = true;
         }
@@ -163,26 +162,10 @@ public class Tile : MonoBehaviour
         _highlight.SetActive(true);
     }
 
-
-    private void OnMouseDown()
-    {
-        //if(this.tag == "Grid" && !objectOnTile && (GridManager.Instance.whore.currentTilesLeft != 0) && tileCanBeMovedOn)
-        //{
-        //    Debug.Log(gameObject.name);
-        //    GridManager.Instance.whore.transform.position = new Vector3(this.transform.position.x, 0.5f, this.transform.position.z);
-        //    GridManager.Instance.whore.currentTilesLeft -= 1;
-        //}
-        //else
-        //{
-        //    Debug.Log(gameObject.name);
-        //}
-           
-    }
-
     private void OnMouseExit()
     {
         _highlight.SetActive(false);
-        if (GridManager.Instance.movementIsDragging)
+        if (GridManager.Instance.movementIsDragging)//When character is dragging movement line this will make sure it turns off blue highlight
         {
             ClearMoveableSquares();
             return;

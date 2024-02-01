@@ -201,11 +201,13 @@ public class GridManager : MonoBehaviour
             return;
         }
 
-
         tile.isHighlighted = true;
         tilesInMovement.Add(tile);
         whore.currentTilesLeft -= 1;
-        tile.FindMoveableSquares();
+        if(whore.currentTilesLeft > 0)
+        {
+            tile.FindMoveableSquares();
+        }
     }
 
     public void ClearListForMovement()

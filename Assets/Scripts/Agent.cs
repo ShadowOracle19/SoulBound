@@ -74,8 +74,6 @@ public class Agent : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log("down 1");
-        //selected.SetActive(true);
         GridManager.Instance.SelectAgent(this);
     }
 }
