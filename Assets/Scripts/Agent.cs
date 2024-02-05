@@ -52,6 +52,7 @@ public class Agent : MonoBehaviour
 
     private void OnMouseUp()
     {
+        //Drag drop mechanics
         GridManager.Instance.movementIsDragging = false;
         if (GridManager.Instance.tilesInMovement.Count != 0)
         {
@@ -59,6 +60,8 @@ public class Agent : MonoBehaviour
             transform.position.y, GridManager.Instance.tilesInMovement[GridManager.Instance.tilesInMovement.Count - 1].transform.position.z);
             GridManager.Instance.ClearListForMovement();
         }
+
+        //Attack mechanics
 
     }
 
@@ -75,5 +78,7 @@ public class Agent : MonoBehaviour
     private void OnMouseDown()
     {
         GridManager.Instance.SelectAgent(this);
+
+
     }
 }
