@@ -36,7 +36,7 @@ public class DeployAgent : MonoBehaviour,IDragHandler,IDropHandler, IBeginDragHa
     {
         if(agentSpawned) return;
         agentSpawned = true;
-        GridManager.Instance.deployingAgent = Instantiate(agentPrefab);
+        GridManager.Instance.deployingAgent = Instantiate(agentPrefab, new Vector3(100, 100), Quaternion.identity);
     }
 
     // Start is called before the first frame update
