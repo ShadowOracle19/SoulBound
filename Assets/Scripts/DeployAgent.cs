@@ -29,6 +29,7 @@ public class DeployAgent : MonoBehaviour,IDragHandler,IDropHandler, IBeginDragHa
         GridManager.Instance.dragToDeployAgent = false;
         GridManager.Instance.deployAgentOverTile = false;
         deploying = false;
+        CombatManager.Instance.agentsToDeploy -= 1;
 
     }
 
@@ -37,6 +38,7 @@ public class DeployAgent : MonoBehaviour,IDragHandler,IDropHandler, IBeginDragHa
         if(agentSpawned) return;
         agentSpawned = true;
         GridManager.Instance.deployingAgent = Instantiate(agentPrefab, new Vector3(100, 100), Quaternion.identity);
+        CombatManager.Instance.agents.Add(GridManager.Instance.deployingAgent.GetComponent<Agent>());
     }
 
     // Start is called before the first frame update

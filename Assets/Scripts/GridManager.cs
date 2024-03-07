@@ -97,46 +97,53 @@ public class GridManager : MonoBehaviour
     }
 
     //check the tiles around the player and return true if there is an enemy
-    public Tile CheckTilesAroundAgent()
+    public List<Tile> CheckTilesAroundToken(Token token)
     {
-        int _x = whore.currentTile._x;
-        int _z = whore.currentTile._z;
+        List<Tile> tilesWithObjects = new List<Tile>();
+        int _x = token.currentTile._x;
+        int _z = token.currentTile._z;
         if (GetTileAtPosition(new Vector2(_x + 1, _z)) != null && GetTileAtPosition(new Vector2(_x + 1, _z)).objectOnTile)
         {
-            return GetTileAtPosition(new Vector2(_x + 1, _z));
+            tilesWithObjects.Add(GetTileAtPosition(new Vector2(_x + 1, _z)));
 
         }
 
         if (GetTileAtPosition(new Vector2(_x, _z + 1)) != null && GetTileAtPosition(new Vector2(_x, _z + 1)).objectOnTile)
         {
-            return GetTileAtPosition(new Vector2(_x, _z + 1));
+            tilesWithObjects.Add(GetTileAtPosition(new Vector2(_x, _z + 1)));
         }
 
         if (GetTileAtPosition(new Vector2(_x - 1, _z)) != null && GetTileAtPosition(new Vector2(_x - 1, _z)).objectOnTile)
         {
-            return GetTileAtPosition(new Vector2(_x - 1, _z));
+            tilesWithObjects.Add(GetTileAtPosition(new Vector2(_x - 1, _z)));
 
         }
 
         if (GetTileAtPosition(new Vector2(_x, _z - 1)) != null && GetTileAtPosition(new Vector2(_x, _z - 1)).objectOnTile)
         {
-            return GetTileAtPosition(new Vector2(_x, _z - 1));
+            tilesWithObjects.Add(GetTileAtPosition(new Vector2(_x, _z - 1)));
 
         }
-        Debug.Log("No enemies around");
-        return null;
+        
+        
+
+        if(tilesWithObjects.Count == 0)
+            return null;
+
+        return tilesWithObjects;
+
     }
 
     public void Attack()
     {
-        if (CheckTilesAroundAgent() != null)
-        {
-            Tile enemyTile = CheckTilesAroundAgent();
+        //if (CheckTilesAroundAgent() != null)
+        //{
+        //    Tile enemyTile = CheckTilesAroundAgent();
             
             
-            Destroy(enemyTile.agentTile.gameObject);
-            enemyTile.EmptyTile();
-        }
+        //    Destroy(enemyTile.agentTile.gameObject);
+        //    enemyTile.EmptyTile();
+        //}
     }
 
     private void Update()
@@ -190,7 +197,7 @@ public class GridManager : MonoBehaviour
                 tile.FindMoveableSquares();
                 return;
             }
-            else if(tilesInMovement.Count == 1 && tile.agentTile == whore)
+            else if(tilesInMovement.Count == 1 && tile.currentToken == whore)
             {
                 tilesInMovement[tilesInMovement.Count - 1].isHighlighted = false;
                 tilesInMovement[tilesInMovement.Count - 1].tileCanBeMovedOn = false;

@@ -2,52 +2,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Agent : MonoBehaviour
+public class Agent : Token
 {
-    public Tile currentTile;
-    public int maxMoveTiles = 5;
+    public AgentStatistics statistics;
     public int currentTilesLeft;
     public bool noMoreMovement = false;
     public bool currentlyBeingControlled = false;
 
-    public GameObject hoverOver;
     public GameObject selected;
 
-    private void OnTriggerStay(Collider other)
-    {
-        if(other.GetComponent<Tile>() != null)
-        {
-            currentTile = other.gameObject.GetComponent<Tile>();
-            currentTile.GetComponent<Tile>().objectOnTile = true;
-            currentTile.GetComponent<Tile>().agentTile = this;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        currentTile.objectOnTile = false;
-        currentTile.agentTile = null;
-        currentTile = null;
-    }
 
     // Start is called before the first frame update
     void Start()
     {
-        currentTilesLeft = maxMoveTiles;
+        maxHealth = maxHealth * statistics.health;
+        currentHealth = maxHealth;
+        healthBar.SetHealth(currentHealth, maxHealth);
+        currentTilesLeft = maxMoveTiles + statistics.speed;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
+        healthBar.SetHealth(currentHealth, maxHealth);
+        if (canBeTargeted)
+        {
+            canBeTargetedSprite.SetActive(true);
+        }
+        else if (!canBeTargeted)
+        {
+            canBeTargetedSprite.SetActive(false);
+        }
         if (GridManager.Instance.tilesInMovement.Count == 0 && GridManager.Instance.whore == this && currentTilesLeft > 0)
         {
             currentTile.FindMoveableSquares();
         }
+        currentHealth = (int)Mathf.Clamp(currentHealth, -Mathf.Infinity, maxHealth);
     }
 
     private void OnMouseDrag()
     {
-        GridManager.Instance.movementIsDragging = true;
+        if(CombatManager.Instance.combatStarted)
+            GridManager.Instance.movementIsDragging = true;
     }
 
     private void OnMouseUp()
@@ -61,24 +57,22 @@ public class Agent : MonoBehaviour
             GridManager.Instance.ClearListForMovement();
         }
 
-        //Attack mechanics
-
-    }
-
-    private void OnMouseEnter()
-    {
-        hoverOver.SetActive(true);
-    }
-
-    private void OnMouseExit()
-    {
-        hoverOver.SetActive(false);
     }
 
     private void OnMouseDown()
     {
-        GridManager.Instance.SelectAgent(this);
+        if(CombatManager.Instance.combatStarted)
+        {
+            if (canBeTargeted)
+            {
+                AbilityLoader.Instance.UseAbility(this);
+                return;
+            }
 
+            GridManager.Instance.SelectAgent(this);
 
+            AbilityLoader.Instance.LoadAgentAbilities(this);
+        }
+        
     }
 }

@@ -16,8 +16,8 @@ public class Tile : MonoBehaviour
     public bool objectOnTile = false;
     public bool tileCanBeMovedOn = false;
     public bool isHighlighted = false;
-    public Agent agentTile;
-    public Enemy enemy;
+
+    public Token currentToken;
 
 
     public void Init(bool isOffset, int x, int z)
@@ -57,7 +57,7 @@ public class Tile : MonoBehaviour
         }
 
         //Makes Tiles Unavailable to move onto
-        if (agentTile || enemy)
+        if (currentToken)
         {
             objectOnTile = true;
         }
@@ -79,13 +79,13 @@ public class Tile : MonoBehaviour
 
     public void EmptyTile()
     {
-        agentTile = null;
+        currentToken = null;
         objectOnTile = false;
     }
 
     public void FindMoveableSquares()
     {
-        if(!objectOnTile || agentTile == GridManager.Instance.whore)
+        if(!objectOnTile || currentToken == GridManager.Instance.whore)
         {
             tileCanBeMovedOn = true;
         }
