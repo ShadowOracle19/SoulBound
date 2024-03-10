@@ -6,6 +6,8 @@ public class Enemy : Token
 {
     public Sprite enemySprite;
 
+    public bool currentTurn = false;
+
     private void Start()
     {
         currentHealth = maxHealth;

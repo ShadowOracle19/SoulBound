@@ -62,12 +62,16 @@ public class CombatManager : MonoBehaviour
             StartCombat();
         }
 
-        if (initiative[index].GetComponent<Agent>())
+        if(combatStarted)
         {
-            GridManager.Instance.SelectAgent((initiative[index].GetComponent<Agent>()));
+            if (initiative[index].GetComponent<Agent>())
+            {
+                GridManager.Instance.SelectAgent((initiative[index].GetComponent<Agent>()));
 
-            AbilityLoader.Instance.LoadAgentAbilities((initiative[index].GetComponent<Agent>()));
+                AbilityLoader.Instance.LoadAgentAbilities((initiative[index].GetComponent<Agent>()));
+            }
         }
+        
     }
 
     public void StartCombat()
