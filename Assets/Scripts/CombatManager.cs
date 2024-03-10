@@ -56,7 +56,7 @@ public class CombatManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(agentsToDeploy == 0)
+        if (agentsToDeploy == 0 && GridManager.Instance.deployingAgent == null)
         {
             deployUI.SetActive(false);
             StartCombat();
@@ -66,10 +66,16 @@ public class CombatManager : MonoBehaviour
         {
             if (initiative[index].GetComponent<Agent>())
             {
+                initiative[index].GetComponent<Agent>().currentTurn = true;
                 GridManager.Instance.SelectAgent((initiative[index].GetComponent<Agent>()));
 
                 AbilityLoader.Instance.LoadAgentAbilities((initiative[index].GetComponent<Agent>()));
             }
+            else if(initiative[index].GetComponent<Enemy>())
+            {
+                initiative[index].GetComponent<Enemy>().currentTurn = true;
+            }
+            
         }
         
     }
@@ -109,16 +115,20 @@ public class CombatManager : MonoBehaviour
 
         for (int i = initiative.Count - 1; i >= 0; i--)
         {
-            Image initImage = Instantiate(initiativeImage, InitParent.transform).GetComponent<Image>();
+            GameObject initImage = Instantiate(initiativeImage, InitParent.transform);
 
             if (initiative[i].GetComponent<Enemy>())
             {
-                initImage.sprite = initiative[i].GetComponent<Enemy>().enemySprite;
+                initImage.GetComponent<InitiativePopup>().tokenSprite.sprite = initiative[i].GetComponent<Enemy>().stats.enemySprite;
+                initImage.GetComponent<InitiativePopup>().tokenName.text = initiative[i].GetComponent<Enemy>().stats.enemyName;
+                initImage.GetComponent<InitiativePopup>().connectedToken = initiative[i].GetComponent<Enemy>();
 
             }
             else if(initiative[i].GetComponent<Agent>())
             {
-                initImage.sprite = initiative[i].GetComponent<Agent>().statistics.AgentSprite;
+                initImage.GetComponent<InitiativePopup>().tokenSprite.sprite = initiative[i].GetComponent<Agent>().statistics.AgentSprite;
+                initImage.GetComponent<InitiativePopup>().tokenName.text = initiative[i].GetComponent<Agent>().statistics.AgentName;
+                initImage.GetComponent<InitiativePopup>().connectedToken = initiative[i].GetComponent<Agent>();
             }
         }
 
@@ -127,14 +137,36 @@ public class CombatManager : MonoBehaviour
         index = initiative.Count - 1;
     }
 
-    public void EndTurn()
+    public void EndTurn(Token tokenCall)
     {
-        if(index == 0)
+        if(tokenCall == currentInInitiative)
         {
-            index = initiative.Count;
+            initiative[index].GetComponent<Token>().currentTurn = false;
+            if (index == 0)
+            {
+                index = initiative.Count;
+            }
+            index -= 1;
+            currentInInitiative = initiative[index];
         }
-        index -= 1;
-        currentInInitiative = initiative[index];
+        
+    }
+
+    public void KillOffToken(Token deadToken)
+    {
+        initiative.Remove(deadToken);
+
+        if(deadToken.GetComponent<Agent>())
+        {
+            agents.Remove(deadToken.GetComponent<Agent>());
+        }
+
+        if (deadToken.GetComponent<Enemy>())
+        {
+            enemies.Remove(deadToken.GetComponent<Enemy>());
+        }
+
+        EndTurn(currentInInitiative);
     }
 
 

@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityName: Fire Gun
   abilityDescription: Shoot gun
   abilitySprite: {fileID: 0}
-  isHealingAbility: 0
+  isHealingAbility: 1
   isRanged: 1
   damage: 1
   cost: 0

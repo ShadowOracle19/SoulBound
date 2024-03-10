@@ -85,6 +85,15 @@ public class AbilityLoader : MonoBehaviour
 
         if(ability.isRanged)//if the ability is ranged have the player select their target
         {
+            if(ability.isHealingAbility)
+            {
+                friendlyTargets = CombatManager.Instance.agents;
+                foreach (Agent agent in friendlyTargets)
+                {
+                    agent.canBeTargeted = true;
+                }
+                return;
+            }
             enemyTargets = CombatManager.Instance.enemies;
             foreach (Enemy enemy in enemyTargets)
             {
@@ -141,7 +150,7 @@ public class AbilityLoader : MonoBehaviour
                 token.gameObject.GetComponent<Agent>().currentHealth += currentAbility.damage * currentSelectedAgent.statistics.attack;
             }
             ClearTargets();
-            CombatManager.Instance.EndTurn();
+            CombatManager.Instance.EndTurn(CombatManager.Instance.currentInInitiative);
             return;
         }
 
@@ -152,7 +161,7 @@ public class AbilityLoader : MonoBehaviour
             Debug.Log("ATTACK");
         }
         ClearTargets();
-        CombatManager.Instance.EndTurn();
+        CombatManager.Instance.EndTurn(CombatManager.Instance.currentInInitiative);
     }
 
     public void ClearTargets()
@@ -167,7 +176,7 @@ public class AbilityLoader : MonoBehaviour
         {
             enemy.canBeTargeted = false;
         }
-        friendlyTargets.Clear();
-        enemyTargets.Clear();
+        //friendlyTargets.Clear();
+        //enemyTargets.Clear();
     }
 }

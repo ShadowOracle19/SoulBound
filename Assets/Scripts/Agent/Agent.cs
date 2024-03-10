@@ -5,7 +5,6 @@ using UnityEngine;
 public class Agent : Token
 {
     public AgentStatistics statistics;
-    public int currentTilesLeft;
     public bool noMoreMovement = false;
     public bool currentlyBeingControlled = false;
 
@@ -18,7 +17,8 @@ public class Agent : Token
         maxHealth = maxHealth * statistics.health;
         currentHealth = maxHealth;
         healthBar.SetHealth(currentHealth, maxHealth);
-        currentTilesLeft = maxMoveTiles + statistics.speed;
+        maxMoveTiles += statistics.speed;
+        currentTilesLeft = maxMoveTiles;
     }
 
     // Update is called once per frame
@@ -49,6 +49,7 @@ public class Agent : Token
     private void OnMouseUp()
     {
         //Drag drop mechanics
+
         GridManager.Instance.movementIsDragging = false;
         if (GridManager.Instance.tilesInMovement.Count != 0)
         {
@@ -69,9 +70,6 @@ public class Agent : Token
                 return;
             }
 
-            GridManager.Instance.SelectAgent(this);
-
-            AbilityLoader.Instance.LoadAgentAbilities(this);
         }
         
     }

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d446bb01f77f9e54a9904044b28ac09b, type: 3}
+  m_Name: BasicEnemy
+  m_EditorClassIdentifier: 
+  enemyBehaviour: {fileID: 11400000, guid: 1da00478c418be645859194112b0e728, type: 2}
+  enemyName: Channel 29
+  agentDescription: why am I here
+  enemySprite: {fileID: 21300000, guid: be59d690651f4544999c70a4de50de44, type: 3}
+  attack: 0
+  defense: 0
+  health: 1
+  alertnes: 0
+  speed: 2
+  cost: 0
+  critRate: 0
+  ability1: {fileID: 0}
+  ability2: {fileID: 0}

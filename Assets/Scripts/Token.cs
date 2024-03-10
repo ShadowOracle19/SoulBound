@@ -9,6 +9,7 @@ public class Token : MonoBehaviour
     [Header("Battle Stats")]
     public Tile currentTile;
     public int maxMoveTiles = 2;
+    public int currentTilesLeft;
 
     public int maxHealth = 10;
     public int currentHealth;
@@ -21,6 +22,8 @@ public class Token : MonoBehaviour
 
     public int initativeNumber;
 
+    public bool currentTurn = false;
+
     public void Update()
     {
         healthBar.SetHealth(currentHealth, maxHealth);
@@ -31,6 +34,17 @@ public class Token : MonoBehaviour
         else if (!canBeTargeted)
         {
             canBeTargetedSprite.SetActive(false);
+        }
+
+        Death();
+    }
+
+    public void Death()
+    {
+        if (currentHealth <= 0)//death
+        {
+            CombatManager.Instance.KillOffToken(this);
+            Destroy(gameObject);
         }
     }
 
@@ -56,9 +70,11 @@ public class Token : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        currentTile.objectOnTile = false;
-        currentTile.currentToken = null;
+
+        other.GetComponent<Tile>().objectOnTile = false;
+        other.GetComponent<Tile>().currentToken = null;
         currentTile = null;
+        
     }
 
     

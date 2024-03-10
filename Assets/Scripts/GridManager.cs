@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
+    #region dont touch this
     private static GridManager _instance;
     public static GridManager Instance
     {
@@ -22,6 +23,7 @@ public class GridManager : MonoBehaviour
     {
         _instance = this;
     }
+    #endregion
 
     [SerializeField] private int _width, _height;
     [SerializeField] private int _bWidth, _bHeight;
