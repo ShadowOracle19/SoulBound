@@ -27,7 +27,6 @@ namespace NodeCanvas.Tasks.Actions{
             {
                 _blackboard.SetVariableValue("TargetedAgent", agent.GetComponent<Enemy>().CheckIfAgentInRange());
 
-                CombatManager.Instance.EndTurn(agent.GetComponent<Token>());
                 EndAction(true);
 
             }
@@ -55,20 +54,24 @@ namespace NodeCanvas.Tasks.Actions{
                     CombatManager.Instance.EndTurn(agent.GetComponent<Token>());
                     Debug.Log("arrived at agent");
                     yield return null;
-                    EndAction(true);
+                    EndAction(false);
                     break;
                     
                 }
 
-                if(GridManager.Instance.GetTileAtPosition(new Vector3(agent.transform.position.x - x, (int)agent.transform.position.z - z)).objectOnTile)//if the tile they are about to step on as an object select another
-                {
-
-                }
-
+                
                 if(x != 0)//this will allow the bots to favor going on the x axis before the z axis
                 {
                     z = 0;
                 }
+
+                if (GridManager.Instance.GetTileAtPosition(new Vector3(agent.transform.position.x - x, (int)agent.transform.position.z - z)).objectOnTile)//if the tile they are about to step on as an object select another
+                {
+                    Debug.Log("Object on tile");
+                    x = 0;
+                    z = 1;
+                }
+
                 agent.transform.position = new Vector3(agent.transform.position.x - x, agent.transform.position.y, (int)agent.transform.position.z - z);
 
                 yield return new WaitForSeconds(0.5f);
@@ -81,7 +84,7 @@ namespace NodeCanvas.Tasks.Actions{
             //agent.transform.position = new Vector3((int)agent.transform.position.x, agent.transform.position.y, (int)agent.transform.position.z);
 
             CombatManager.Instance.EndTurn(agent.GetComponent<Token>());
-            EndAction(true);
+            EndAction(false);
         }
 
 		//Called once per frame while the action is active.

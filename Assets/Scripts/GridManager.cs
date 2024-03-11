@@ -104,6 +104,8 @@ public class GridManager : MonoBehaviour
         List<Tile> tilesWithObjects = new List<Tile>();
         int _x = token.currentTile._x;
         int _z = token.currentTile._z;
+
+        //horizontal vertical
         if (GetTileAtPosition(new Vector2(_x + 1, _z)) != null && GetTileAtPosition(new Vector2(_x + 1, _z)).objectOnTile)
         {
             tilesWithObjects.Add(GetTileAtPosition(new Vector2(_x + 1, _z)));
@@ -126,7 +128,31 @@ public class GridManager : MonoBehaviour
             tilesWithObjects.Add(GetTileAtPosition(new Vector2(_x, _z - 1)));
 
         }
+
+        //diagional
         
+        if (GetTileAtPosition(new Vector2(_x + 1, _z + 1)) != null && GetTileAtPosition(new Vector2(_x + 1, _z + 1)).objectOnTile)
+        {
+            tilesWithObjects.Add(GetTileAtPosition(new Vector2(_x + 1, _z + 1)));
+
+        }
+
+        if (GetTileAtPosition(new Vector2(_x - 1, _z + 1)) != null && GetTileAtPosition(new Vector2(_x - 1, _z + 1)).objectOnTile)
+        {
+            tilesWithObjects.Add(GetTileAtPosition(new Vector2(_x - 1, _z + 1)));
+        }
+
+        if (GetTileAtPosition(new Vector2(_x - 1, _z + 1)) != null && GetTileAtPosition(new Vector2(_x - 1, _z + 1)).objectOnTile)
+        {
+            tilesWithObjects.Add(GetTileAtPosition(new Vector2(_x - 1, _z + 1)));
+
+        }
+
+        if (GetTileAtPosition(new Vector2(_x - 1, _z - 1)) != null && GetTileAtPosition(new Vector2(_x - 1, _z - 1)).objectOnTile)
+        {
+            tilesWithObjects.Add(GetTileAtPosition(new Vector2(_x - 1, _z - 1)));
+
+        }
         
 
         if(tilesWithObjects.Count == 0)

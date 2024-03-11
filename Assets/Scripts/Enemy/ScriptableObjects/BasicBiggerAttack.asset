@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 44c2ca3d90bd9394586f0362babbc127, type: 3}
-  m_Name: Fire Gun
+  m_Name: BasicBiggerAttack
   m_EditorClassIdentifier: 
-  abilityName: Fire Gun
-  abilityDescription: Shoot gun
+  abilityName: Bigger Melee
+  abilityDescription: 
   abilitySprite: {fileID: 0}
   isHealingAbility: 0
-  isRanged: 1
-  damage: 1
+  isRanged: 0
+  damage: 3
   cost: 0
-  numberOfHits: 1
+  numberOfHits: 4

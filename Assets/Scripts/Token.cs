@@ -44,6 +44,7 @@ public class Token : MonoBehaviour
         if (currentHealth <= 0)//death
         {
             CombatManager.Instance.KillOffToken(this);
+            
             Destroy(gameObject);
         }
     }

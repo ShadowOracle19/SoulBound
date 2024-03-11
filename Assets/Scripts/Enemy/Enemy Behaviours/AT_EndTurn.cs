@@ -19,7 +19,7 @@ namespace NodeCanvas.Tasks.Actions{
 
             CombatManager.Instance.EndTurn(agent.GetComponent<Token>());
 			
-            EndAction(true);
+            EndAction(false);
 		}
 
 		//Called once per frame while the action is active.

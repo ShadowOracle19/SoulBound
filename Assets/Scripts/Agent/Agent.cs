@@ -42,7 +42,7 @@ public class Agent : Token
 
     private void OnMouseDrag()
     {
-        if(CombatManager.Instance.combatStarted)
+        if(CombatManager.Instance.combatStarted && currentTurn)
             GridManager.Instance.movementIsDragging = true;
     }
 

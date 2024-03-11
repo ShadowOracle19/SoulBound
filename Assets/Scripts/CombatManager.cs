@@ -23,6 +23,7 @@ public class CombatManager : MonoBehaviour
     
 
     public bool combatStarted = false;
+    public bool turnJustStarted = false;
 
     #region Dont touch this
     private static CombatManager _instance;
@@ -56,6 +57,7 @@ public class CombatManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        index = Mathf.Clamp(index, 0, initiative.Count - 1);
         if (agentsToDeploy == 0 && GridManager.Instance.deployingAgent == null)
         {
             deployUI.SetActive(false);
@@ -64,15 +66,18 @@ public class CombatManager : MonoBehaviour
 
         if(combatStarted)
         {
-            if (initiative[index].GetComponent<Agent>())
+            if (initiative[index].GetComponent<Agent>() && !turnJustStarted)
             {
+                turnJustStarted = true;
                 initiative[index].GetComponent<Agent>().currentTurn = true;
+                initiative[index].GetComponent<Agent>().currentTilesLeft = initiative[index].GetComponent<Agent>().maxMoveTiles;
                 GridManager.Instance.SelectAgent((initiative[index].GetComponent<Agent>()));
 
                 AbilityLoader.Instance.LoadAgentAbilities((initiative[index].GetComponent<Agent>()));
             }
-            else if(initiative[index].GetComponent<Enemy>())
+            else if(initiative[index].GetComponent<Enemy>() && !turnJustStarted)
             {
+                turnJustStarted = true;
                 initiative[index].GetComponent<Enemy>().currentTurn = true;
             }
             
@@ -141,6 +146,7 @@ public class CombatManager : MonoBehaviour
     {
         if(tokenCall == currentInInitiative)
         {
+            turnJustStarted = false;
             initiative[index].GetComponent<Token>().currentTurn = false;
             if (index == 0)
             {
@@ -148,6 +154,7 @@ public class CombatManager : MonoBehaviour
             }
             index -= 1;
             currentInInitiative = initiative[index];
+            turnJustStarted = false;
         }
         
     }
@@ -166,7 +173,7 @@ public class CombatManager : MonoBehaviour
             enemies.Remove(deadToken.GetComponent<Enemy>());
         }
 
-        EndTurn(currentInInitiative);
+        //EndTurn(currentInInitiative);
     }
 
 
