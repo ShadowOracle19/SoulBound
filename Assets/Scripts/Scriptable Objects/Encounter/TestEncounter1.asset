@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a078c38aecf670044bba2f7348271db1, type: 3}
-  m_Name: TestEncounter
+  m_Name: TestEncounter1
   m_EditorClassIdentifier: 
-  combat: {fileID: 11400000, guid: a1c5ccced0f7ef24f999441df3866073, type: 2}
+  combat: {fileID: 11400000, guid: a6b120d7903188d4c8a69ce8c8d6145e, type: 2}

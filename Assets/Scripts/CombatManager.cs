@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class CombatManager : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class CombatManager : MonoBehaviour
 
     public bool combatStarted = false;
     public bool turnJustStarted = false;
+
+    public GameObject spawnBox;
 
     #region Dont touch this
     private static CombatManager _instance;
@@ -97,6 +100,8 @@ public class CombatManager : MonoBehaviour
         {
             Instantiate(baddie.enemy, baddie.position, Quaternion.identity, enemyTransform);
         }
+
+        spawnBox.SetActive(true);
     }
 
     public void StartCombat()
@@ -105,6 +110,8 @@ public class CombatManager : MonoBehaviour
             return;
 
         combatStarted = true;
+
+        spawnBox.SetActive(false);
 
         foreach(Transform child in enemyTransform)
         {
@@ -116,7 +123,20 @@ public class CombatManager : MonoBehaviour
 
     public void EndCombat()
     {
-
+        agentsToDeploy = 2;
+        combatStarted = false;
+        GridManager.Instance.DestroyGrid();
+        GameManager.Instance.battleUI.SetActive(false);
+        GameManager.Instance.levelSelectUI.SetActive(true);
+        
+        foreach (var agent in agents)
+        {
+            Destroy(agent.gameObject);
+        }
+        agents.Clear();
+        initiative.Clear();
+        enemies.Clear();
+        index = 0;
     }
 
     public void PleaseRollForInitiative()
@@ -182,7 +202,7 @@ public class CombatManager : MonoBehaviour
     {
         initiative.Remove(deadToken);
 
-        if(deadToken.GetComponent<Agent>())
+        if (deadToken.GetComponent<Agent>())
         {
             agents.Remove(deadToken.GetComponent<Agent>());
         }
@@ -191,6 +211,8 @@ public class CombatManager : MonoBehaviour
         {
             enemies.Remove(deadToken.GetComponent<Enemy>());
         }
+
+        //currentInInitiative = initiative[index];
 
         //EndTurn(currentInInitiative);
     }

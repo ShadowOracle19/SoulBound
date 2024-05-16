@@ -61,6 +61,13 @@ public class DeployAgent : MonoBehaviour,IDragHandler,IDropHandler, IBeginDragHa
         {
             GetComponent<Image>().color = Color.clear;
         }
+        
+    }
+
+    public void ResetDragDrop()
+    {
+        agentSpawned = false;
+        GetComponent<Image>().color = Color.white;
     }
 
    

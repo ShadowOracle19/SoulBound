@@ -73,7 +73,15 @@ public class GridManager : MonoBehaviour
     //play this when combat finishes
     public void DestroyGrid()
     {
-
+        foreach (Transform child in _gridParent)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (Transform child in _backgroundGridParent)
+        {
+            Destroy(child.gameObject);
+        }
+        _tiles.Clear();
     }
 
     void GenerateGrid()
