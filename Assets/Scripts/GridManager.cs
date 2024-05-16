@@ -52,8 +52,28 @@ public class GridManager : MonoBehaviour
 
     private void Start()
     {
+    }
+
+    //play this before combat starts
+    public void InitGrid()
+    {
         GenerateGrid();
         GenerateBackgroundGrid();
+
+        for (int i = 1; i <= 4; i++)
+        {
+            for (int j = 1; j <= 7; j++)
+            {
+                Tile tileThatCanBeDeployedOn = GetTileAtPosition(new Vector2(i, j));
+                tileThatCanBeDeployedOn.canPlacePlayerUnit = true;
+            }
+        }
+    }
+
+    //play this when combat finishes
+    public void DestroyGrid()
+    {
+
     }
 
     void GenerateGrid()

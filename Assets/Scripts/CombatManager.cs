@@ -81,8 +81,22 @@ public class CombatManager : MonoBehaviour
                 initiative[index].GetComponent<Enemy>().currentTurn = true;
             }
             
+            //all enemies dead
+            if(enemies.Count == 0)
+            {
+                EndCombat();
+            }
+
         }
         
+    }
+
+    public void LoadCombat(CombatCreator combat)
+    {
+        foreach (var baddie in combat.combatents)
+        {
+            Instantiate(baddie.enemy, baddie.position, Quaternion.identity, enemyTransform);
+        }
     }
 
     public void StartCombat()
@@ -98,6 +112,11 @@ public class CombatManager : MonoBehaviour
         }
 
         PleaseRollForInitiative();
+    }
+
+    public void EndCombat()
+    {
+
     }
 
     public void PleaseRollForInitiative()

@@ -17,6 +17,8 @@ public class Tile : MonoBehaviour
     public bool tileCanBeMovedOn = false;
     public bool isHighlighted = false;
 
+    public bool canPlacePlayerUnit = false;
+
     public Token currentToken;
 
 
@@ -150,12 +152,13 @@ public class Tile : MonoBehaviour
             GridManager.Instance.StartDragMovement(this);
             return;
         }
+
         if (GridManager.Instance.dragToDeployAgent && !GridManager.Instance.deployAgentOverTile)
         {
             GridManager.Instance.deployAgentOverTile = true;
         }
 
-        if (GridManager.Instance.dragToDeployAgent && GridManager.Instance.deployAgentOverTile && GridManager.Instance.deployingAgent != null)
+        if (GridManager.Instance.dragToDeployAgent && GridManager.Instance.deployAgentOverTile && GridManager.Instance.deployingAgent != null && canPlacePlayerUnit)
         {
             GridManager.Instance.deployingAgent.transform.position = new Vector3(this.transform.position.x, 0.5f, this.transform.position.z);
         }
