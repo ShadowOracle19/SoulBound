@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     public GameObject levelSelectUI;
     public GameObject dragDropUI;
     public GameObject InitParentUI;
+    public GameObject abilityUI;
 
 
     // Start is called before the first frame update

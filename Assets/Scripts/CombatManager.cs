@@ -69,27 +69,27 @@ public class CombatManager : MonoBehaviour
 
         if(combatStarted)
         {
-            if (initiative[index].GetComponent<Agent>() && !turnJustStarted)
-            {
-                turnJustStarted = true;
-                initiative[index].GetComponent<Agent>().currentTurn = true;
-                initiative[index].GetComponent<Agent>().currentTilesLeft = initiative[index].GetComponent<Agent>().maxMoveTiles;
-                GridManager.Instance.SelectAgent((initiative[index].GetComponent<Agent>()));
-
-                AbilityLoader.Instance.LoadAgentAbilities((initiative[index].GetComponent<Agent>()));
-            }
-            else if(initiative[index].GetComponent<Enemy>() && !turnJustStarted)
-            {
-                turnJustStarted = true;
-                initiative[index].GetComponent<Enemy>().currentTurn = true;
-            }
-            
             //all enemies dead
-            if(enemies.Count == 0)
+            if (enemies.Count == 0 || enemies[0] == null)
             {
                 EndCombat();
             }
 
+            if (initiative[index].GetComponent<Agent>() /*&& !turnJustStarted*/)
+            {
+                turnJustStarted = true;
+                initiative[index].GetComponent<Agent>().currentTurn = true;
+                initiative[index].GetComponent<Agent>().currentTilesLeft = initiative[index].GetComponent<Agent>().maxMoveTiles;
+                //GridManager.Instance.SelectAgent((initiative[index].GetComponent<Agent>()));
+                GridManager.Instance.SelectAgent(currentInInitiative.GetComponent<Agent>());
+
+                AbilityLoader.Instance.LoadAgentAbilities((initiative[index].GetComponent<Agent>()));
+            }
+            else if(initiative[index].GetComponent<Enemy>() /*&& !turnJustStarted*/)
+            {
+                turnJustStarted = true;
+                currentInInitiative.GetComponent<Enemy>().currentTurn = true;
+            }
         }
         
     }
@@ -128,6 +128,7 @@ public class CombatManager : MonoBehaviour
         GridManager.Instance.DestroyGrid();
         GameManager.Instance.battleUI.SetActive(false);
         GameManager.Instance.levelSelectUI.SetActive(true);
+        GameManager.Instance.abilityUI.SetActive(false);
         
         foreach (var agent in agents)
         {
