@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class CombatManager : MonoBehaviour
 {
@@ -75,7 +74,7 @@ public class CombatManager : MonoBehaviour
                 EndCombat();
             }
 
-            if (initiative[index].GetComponent<Agent>() /*&& !turnJustStarted*/)
+            if (initiative[index].GetComponent<Agent>() && !turnJustStarted)
             {
                 turnJustStarted = true;
                 initiative[index].GetComponent<Agent>().currentTurn = true;
@@ -85,7 +84,7 @@ public class CombatManager : MonoBehaviour
 
                 AbilityLoader.Instance.LoadAgentAbilities((initiative[index].GetComponent<Agent>()));
             }
-            else if(initiative[index].GetComponent<Enemy>() /*&& !turnJustStarted*/)
+            else if(initiative[index].GetComponent<Enemy>() && !turnJustStarted)
             {
                 turnJustStarted = true;
                 currentInInitiative.GetComponent<Enemy>().currentTurn = true;
